@@ -1,0 +1,35 @@
+name: Cypress Tests (TS)
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request: 
+    branches: ["main", "master"]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Cypress (headless) + generate report
+        env:
+          CYPRESS_baseUrl: https://coreloops-v2-350156031212.europe-west2.run.app
+          CYPRESS_userEmail: qa@coreloops.ai
+          CYPRESS_otp: ${{ secrets.CYPRESS_OTP }}
+        run: npm run test:ci
+
+      - name: Upload Mochawesome HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochawesome-report
+          path: cypress/reports/report.html
