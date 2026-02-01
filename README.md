@@ -20,6 +20,9 @@ This repository contains Cypress E2E tests built with the Page Object Model (POM
 ### 1) Install
 ```bash
 npm install
+npm i --save-dev @types/mailparser
+npm i -D imapflow mailparser
+npm i -D dotenv
 ```
 
 ### 2) Create `.env`
